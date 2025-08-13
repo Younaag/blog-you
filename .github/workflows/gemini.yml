@@ -1,0 +1,29 @@
+name: Run Gemini CLI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-gemini:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Gemini CLI
+        run: npm install -g @google-ai/gemini-cli
+
+      - name: Configure API Key
+        run: echo ${{ secrets.GEMINI_API_KEY }} > ~/.gemini_key
+
+      - name: Run Gemini Command
+        run: gemini chat "Hello Gemini from GitHub Actions"
